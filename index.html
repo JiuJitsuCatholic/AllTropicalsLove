@@ -622,7 +622,7 @@
           </div>
 
           <div class="heroActions">
-            <a class="btn primary" data-contact-link="en" data-contact-call="en" href="tel:+17865710443">Call (786) 571-0443</a>
+            <a class="btn primary" id="heroCallCta" href="tel:+17865710443">Call 786-571-0443</a>
             <a class="btn" href="mailto:alltropicalsovellc@gmail.com">✉️ Email</a>
             <a class="btn" href="#visit">📍 Get directions</a>
           </div>
@@ -824,14 +824,34 @@
   const CONTACTS = {
     en: {
       name: "Lily Suquet",
-      phoneDisplay: "(786) 571-0443",
-      phoneE164: "+17865710443"
+      phonePanel: "(786) 571-0443",
+      phoneHero: "786-571-0443",
+      phoneE164: "+17865710443",
+      callVerb: "Call"
     },
     es: {
       name: "Blanca Suquet",
-      phoneDisplay: "(786) 727-5525",
-      phoneE164: "+17867275525"
+      phonePanel: "(786) 727-5525",
+      phoneHero: "786-727-5525",
+      phoneE164: "+17867275525",
+      callVerb: "Llama"
     }
+  };
+
+  const getCurrentLanguage = () => {
+    const lang = (document.documentElement.lang || "en").toLowerCase();
+    return lang.startsWith("es") ? "es" : "en";
+  };
+
+  const setHeroCallData = () => {
+    const lang = getCurrentLanguage();
+    const contact = CONTACTS[lang];
+    const heroCallCta = document.getElementById("heroCallCta");
+
+    if (!contact || !heroCallCta) return;
+
+    heroCallCta.setAttribute("href", `tel:${contact.phoneE164}`);
+    heroCallCta.textContent = `${contact.callVerb} ${contact.phoneHero}`;
   };
 
   const setContactData = () => {
@@ -844,7 +864,7 @@
     document.querySelectorAll("[data-contact-phone]").forEach((el) => {
       const lang = el.getAttribute("data-contact-phone");
       const contact = CONTACTS[lang];
-      if (contact) el.textContent = contact.phoneDisplay;
+      if (contact) el.textContent = contact.phonePanel;
     });
 
     document.querySelectorAll("[data-contact-name]").forEach((el) => {
@@ -852,15 +872,10 @@
       const contact = CONTACTS[lang];
       if (contact) el.textContent = contact.name;
     });
-
-    document.querySelectorAll("[data-contact-call]").forEach((el) => {
-      const lang = el.getAttribute("data-contact-call");
-      const contact = CONTACTS[lang];
-      if (contact) el.textContent = `Call ${contact.phoneDisplay}`;
-    });
   };
 
   document.getElementById("y").textContent = new Date().getFullYear();
+  setHeroCallData();
   setContactData();
 </script>
 </body>
