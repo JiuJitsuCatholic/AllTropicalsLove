@@ -588,7 +588,7 @@
     </nav>
 
     <div class="cta">
-      <a class="btn" href="tel:+17865710443">📞 Call</a>
+      <a class="btn" data-contact-link="en" href="tel:+17865710443">📞 Call</a>
       <a class="btn primary" href="https://instagram.com/alltropicalslove" target="_blank" rel="noopener">🌴 Instagram</a>
     </div>
   </div>
@@ -622,7 +622,7 @@
           </div>
 
           <div class="heroActions">
-            <a class="btn primary" href="tel:+17865710443">Call 786-571-0443</a>
+            <a class="btn primary" data-contact-link="en" data-contact-call="en" href="tel:+17865710443">Call (786) 571-0443</a>
             <a class="btn" href="mailto:alltropicalsovellc@gmail.com">✉️ Email</a>
             <a class="btn" href="#visit">📍 Get directions</a>
           </div>
@@ -744,7 +744,7 @@
             <div class="ico" aria-hidden="true">📞</div>
             <div>
               <b>Phone</b>
-              <span><a href="tel:+17865710443">786-571-0443</a></span>
+              <span><a data-contact-link="en" data-contact-phone="en" href="tel:+17865710443">(786) 571-0443</a></span>
             </div>
           </div>
 
@@ -767,8 +767,16 @@
           <div class="row">
             <div class="ico" aria-hidden="true">👤</div>
             <div>
-              <b>Sales</b>
-              <span>Lily Suquet</span>
+              <b>English Contact</b>
+              <span><span data-contact-name="en">Lily Suquet</span> • <a data-contact-link="en" data-contact-phone="en" href="tel:+17865710443">(786) 571-0443</a></span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="ico" aria-hidden="true">🇪🇸</div>
+            <div>
+              <b>Contacto (ES)</b>
+              <span><span data-contact-name="es">Blanca Suquet</span> • <a data-contact-link="es" data-contact-phone="es" href="tel:+17867275525">(786) 727-5525</a></span>
             </div>
           </div>
 
@@ -781,7 +789,7 @@
           </div>
 
           <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px;">
-            <a class="btn primary" href="tel:+17865710443">Call now</a>
+            <a class="btn primary" data-contact-link="en" href="tel:+17865710443">Call now</a>
             <a class="btn" href="https://www.google.com/maps?q=21395%20SW%20216%20St,%20Miami,%20FL%2033170" target="_blank" rel="noopener">Open in Maps</a>
           </div>
         </div>
@@ -803,7 +811,7 @@
   <div class="wrap foot">
     <div>© <span id="y"></span> All Tropicals Love, LLC • Miami, FL</div>
     <div>
-      <a href="tel:+17865710443">786-571-0443</a>
+      <a data-contact-link="en" data-contact-phone="en" href="tel:+17865710443">(786) 571-0443</a>
       <span aria-hidden="true"> • </span>
       <a href="mailto:alltropicalsovellc@gmail.com">Email</a>
       <span aria-hidden="true"> • </span>
@@ -813,7 +821,47 @@
 </footer>
 
 <script>
+  const CONTACTS = {
+    en: {
+      name: "Lily Suquet",
+      phoneDisplay: "(786) 571-0443",
+      phoneE164: "+17865710443"
+    },
+    es: {
+      name: "Blanca Suquet",
+      phoneDisplay: "(786) 727-5525",
+      phoneE164: "+17867275525"
+    }
+  };
+
+  const setContactData = () => {
+    document.querySelectorAll("[data-contact-link]").forEach((el) => {
+      const lang = el.getAttribute("data-contact-link");
+      const contact = CONTACTS[lang];
+      if (contact) el.setAttribute("href", `tel:${contact.phoneE164}`);
+    });
+
+    document.querySelectorAll("[data-contact-phone]").forEach((el) => {
+      const lang = el.getAttribute("data-contact-phone");
+      const contact = CONTACTS[lang];
+      if (contact) el.textContent = contact.phoneDisplay;
+    });
+
+    document.querySelectorAll("[data-contact-name]").forEach((el) => {
+      const lang = el.getAttribute("data-contact-name");
+      const contact = CONTACTS[lang];
+      if (contact) el.textContent = contact.name;
+    });
+
+    document.querySelectorAll("[data-contact-call]").forEach((el) => {
+      const lang = el.getAttribute("data-contact-call");
+      const contact = CONTACTS[lang];
+      if (contact) el.textContent = `Call ${contact.phoneDisplay}`;
+    });
+  };
+
   document.getElementById("y").textContent = new Date().getFullYear();
+  setContactData();
 </script>
 </body>
 </html>
